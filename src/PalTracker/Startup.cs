@@ -24,6 +24,13 @@ namespace PalTracker
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+
+            services.AddSingleton(sp => new WelcomeMessage(
+               Configuration.GetValue<string>("WELCOME_MESSAGE", "WELCOME_MESSAGE not configured.")
+           ));
+
+           services.AddSingleton(sp => new CloudFoundryInfo("123", "512M", "1", "127.0.0.1"
+           ));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
