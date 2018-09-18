@@ -147,6 +147,7 @@ namespace PalTrackerTests
 
             Assert.IsType<NotFoundResult>(response);
 
+//_repository.Verify(r =
             var typedResponse = response as NotFoundResult;
 
             Assert.Equal(404, typedResponse.StatusCode);
