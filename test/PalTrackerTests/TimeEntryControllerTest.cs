@@ -12,10 +12,14 @@ namespace PalTrackerTests
         private readonly TimeEntryController _controller;
         private readonly Mock<ITimeEntryRepository> _repository;
 
+        private readonly Mock<IOperationCounter<TimeEntry>> _timeEntryOperationCounter;
+
         public TimeEntryControllerTest()
         {
             _repository = new Mock<ITimeEntryRepository>();
-            _controller = new TimeEntryController(_repository.Object);
+            _timeEntryOperationCounter = new Mock<IOperationCounter<TimeEntry>>();
+            _controller = new TimeEntryController(_repository.Object, _timeEntryOperationCounter.Object );
+            
         }
 
         [Fact]
@@ -33,6 +37,7 @@ namespace PalTrackerTests
 
             Assert.Equal(expected, typedResponse.Value);
             Assert.Equal(200, typedResponse.StatusCode);
+            _timeEntryOperationCounter.Verify(oc => oc.Increment(TrackedOperation.Read), Times.Once);
         }
 
         [Fact]
